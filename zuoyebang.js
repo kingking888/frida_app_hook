@@ -1,3 +1,4 @@
+// 作业帮 12.12.0版本 破解so加密
 Java.perform(function () {
 
     var a=Java.use("com.baidu.homework.common.net.core.a");
