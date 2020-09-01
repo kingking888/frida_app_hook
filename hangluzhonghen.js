@@ -1,5 +1,6 @@
 // 航旅纵横 6.0.6 加密等位到 UmeJni.sub_0515
 // frida -U -l hangluzhonghen.js -f com.umetrip.android.msky.app --no-pause
+// frida hook Android签名  this.f.value.getPackageManager().getPackageInfo("com.umetrip.android.msky.app",0x00000040).signatures.value
 
 function javaHook(){
     Java.perform(function () {
@@ -21,6 +22,9 @@ function javaHook(){
         var RequestBodyBuilder = Java.use('com.umetrip.android.umehttp.RequestBodyBuilder');
         RequestBodyBuilder.a.overload('java.lang.Object', 'java.lang.String', 'java.lang.String', 'java.lang.String').implementation = function (arg1,arg2,arg3,arg4) {
             send("Hook onCreate Start..  ffff.");
+            console.log(this.f.value.getClass().getName())
+            console.log(this.f.value.getPackageManager().getClass().getName())
+            console.log(this.f.value.getPackageManager().getPackageInfo("com.umetrip.android.msky.app",0x00000040).getClass().getName())
             var info = this.f.value.getPackageManager().getPackageInfo("com.umetrip.android.msky.app",0x00000040).signatures.value
             console.log(info[0].toCharsString())
             return this.a(arg1,arg2,arg3,arg4);
