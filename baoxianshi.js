@@ -1,3 +1,9 @@
+// 保险师破解 
+// frida -U -l ssl.js -f com.winbaoxian.wybx --no-pause
+// frida -U -l baoxianshi.js -f com.winbaoxian.wybx --no-pause
+// 保险师  chrome远程调试
+// baoxianshi.html是计划书远程加解密
+
 Java.perform(function () {
 
     var d=Java.use("com.rex.generic.rpc.b.d");
@@ -78,3 +84,15 @@ Java.perform(function () {
 
 
 });
+
+
+client.registerAction("getSignature",function(request, resolve,reject) {
+    var params = request['params'];
+    console.log("params: " + params);
+    let _signature =__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__md5Token_min_js__.a)(JSON.parse(params), {groupDataKey: "allMainInsData"})
+    console.log("signature" + _signature);
+    resolve(_signature);
+});
+
+https://pbf.winbaoxian.com/planBook/planbookInput/pages/common/templatev1/templatev1.html?planbookId=3769
+http://123.57.36.150:11001/asyncInvoke?group=langcode&action=getSignature&params=23

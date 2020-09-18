@@ -1,5 +1,6 @@
 // 趣头条 5.4.1版本 破解so加密，动态调试chrome
 // frida -U -l qutoutiao.js -f com.jifen.qukan --no-pause
+
 Java.perform(function () {
 
     var ContentWebView=Java.use("com.jifen.qukan.content.web.view.ContentWebView");
@@ -29,11 +30,11 @@ Java.perform(function () {
         return result
     }
 
-    f.e.overload().implementation=function(){
-        send("e Hook Start...");
-        var result =  this.e()
-        return result
-    }
+    // f.e.overload().implementation=function(){
+    //     send("e Hook Start...");
+    //     var result =  this.e()
+    //     return result
+    // }
 
 
     var InnerJavascriptInterface=Java.use("com.jifen.qu.open.web.bridge.basic.InnerJavascriptInterface");
@@ -84,13 +85,35 @@ Java.perform(function () {
     
     var NativeUtils=Java.use("com.jifen.qukan.utils.NativeUtils");
     NativeUtils.getInnoSoInfo.overload("java.lang.String").implementation=function(arg1){
-        send("getInnoSoInfo");
+        send("getInnoSoInfo1");
         console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
         send(arg1)
         var result = this.getInnoSoInfo(arg1)
         send(result)
         return result
     }
+
+    var d=Java.use("com.jifen.qukan.http.d");
+    d.a.overload("java.util.List", "boolean").implementation=function(arg1,arg2){
+        send("loger2");
+        send(arg1)
+        for(var i =0;i<arg1.size();i++){
+            console.log(arg1.get(i).toString())
+        }
+        return this.a(arg1,arg2)
+    }
+
+    var InnoSecureUtils=Java.use("com.inno.innosecure.InnoSecureUtils");
+    InnoSecureUtils.secureSo.overload("java.util.List", "boolean").implementation=function(arg1,arg2){
+        send("loger2");
+        send(arg1)
+        for(var i =0;i<arg1.size();i++){
+            console.log(arg1.get(i).toString())
+        }
+        return this.a(arg1,arg2)
+    }
+    
+
     
 });
 
