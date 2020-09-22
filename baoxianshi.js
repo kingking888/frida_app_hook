@@ -82,17 +82,37 @@ Java.perform(function () {
         return result
     }
 
+    var GeneralWebViewActivity=Java.use("com.winbaoxian.wybx.module.web.GeneralWebViewActivity");
+    GeneralWebViewActivity.onCreate.overload('android.os.Bundle').implementation=function(arg1){
+        send("onCreate Hook Start...");
+        var result= this.onCreate(arg1)
+        return result
+    }
+    GeneralWebViewActivity.jumpTo.overload('android.content.Context', 'java.lang.String').implementation=function(arg1,arg2){
+        send("jumpTo Hook Start...");
+        var result= this.jumpTo(arg1,arg2)
+        return result
+    }
+
+
+    // var d=Java.use("com.winbaoxian.a.a.d");
+    // d.a.overload('int', 'java.lang.String', '[Ljava.lang.Object;').implementation=function(arg1,arg2,arg3){
+    //     send("a Hook Start...");
+    //     send(arg1);
+    //     send(arg2);
+    //     send(this.a(arg3))
+    //     var result= this.a(arg1,arg2,arg3)
+    //     return result
+    // }
+
+    var GeneralWebViewActivityBase=Java.use("com.winbaoxian.wybx.module.web.GeneralWebViewActivityBase");
+    GeneralWebViewActivityBase.a.overload('java.lang.String').implementation=function(arg1){
+        send("a Hook Start...");
+        // console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+        arg1 = "https://pbf.winbaoxian.com/planBook/planbookInput/pages/common/templatev1/templatev1.html?planbookId=7268"
+        var result= this.a(arg1)
+        return result
+    }
+
 
 });
-
-
-client.registerAction("getSignature",function(request, resolve,reject) {
-    var params = request['params'];
-    console.log("params: " + params);
-    let _signature =__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__md5Token_min_js__.a)(JSON.parse(params), {groupDataKey: "allMainInsData"})
-    console.log("signature" + _signature);
-    resolve(_signature);
-});
-
-https://pbf.winbaoxian.com/planBook/planbookInput/pages/common/templatev1/templatev1.html?planbookId=3769
-http://123.57.36.150:11001/asyncInvoke?group=langcode&action=getSignature&params=23
