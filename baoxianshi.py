@@ -22,10 +22,16 @@ rpc.exports = {
                     self = this;
                     return result
                 }
-                if(self != null){
-                    console.log(self(body))
-                }
                 
+                Java.choose("com.winbaoxian.wybx.module.web.GeneralWebViewActivityBase", {
+                    onMatch: function (x) {
+                        console.log("find instance :" + x);
+                        console.log("result of fun(string) func:" + x.a(body));
+                    },
+                    onComplete: function () {
+                        console.log("end");
+                    }
+                })
             })
         });
     }
