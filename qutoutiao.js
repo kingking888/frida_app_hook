@@ -21,12 +21,12 @@ Java.perform(function () {
 
     var f=Java.use("com.jifen.framework.http.napi.ok.f");
     f.a.overload('com.jifen.framework.http.napi.b', 'com.jifen.framework.http.napi.HttpRequest', 'com.jifen.framework.http.napi.HttpRequestHandler').implementation=function(arg1, arg2,arg3){
-        if (arg2.url() == "http://ddd.1sapp.com/report" || arg2.url() == "https://log.1sapp.com/a.gif"){
-            return null
-        }
-        if(arg2.url() != "https://api.1sapp.com/content/getListV2"){
-            return null
-        }
+        // if (arg2.url() == "http://ddd.1sapp.com/report" || arg2.url() == "https://log.1sapp.com/a.gif"){
+        //     return null
+        // }
+        // if(arg2.url() != "https://api.1sapp.com/content/getListV2"){
+        //     return null
+        // }
         console.log(arg2.url())
         console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
         var result =  this.a(arg1,arg2,arg3)
@@ -117,9 +117,9 @@ Java.perform(function () {
     //     return this.a(arg1,arg2,arg3,arg4,arg5)
     // }
     f.a.overload('com.jifen.framework.http.napi.Method', 'java.lang.String', 'java.util.Map', 'java.util.List', 'com.jifen.framework.http.napi.Configure', 'com.jifen.framework.http.napi.HttpRequestHandler').implementation=function(arg1,arg2,arg3,arg4,arg5,arg6){
-        if (arg2 != "https://api.1sapp.com/content/getListV2"){
-            return null;
-        }
+        // if (arg2 != "https://api.1sapp.com/content/getListV2"){
+        //     return null;
+        // }
         console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
         console.log("com.jifen.framework.http.napi.ok.f 7")
         console.log(arg2)
