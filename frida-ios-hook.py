@@ -149,6 +149,7 @@ def main():
             finished.wait()
         elif num == 4:
             # 枚举某个进程的所有模块信息
+            session = device.attach(u'SekiroIOS')  # 注入SpringBoard来获取一个session
             listModulesOfProcess(session)
         elif num == 5:
             # 显示界面ui
