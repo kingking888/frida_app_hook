@@ -13,7 +13,7 @@ finished = threading.Event()
 
 APP_JS = './js/app.js'
 UI_JS = './js/ui.js'
-HOOK_JS = './js/hook.js'
+HOOK_JS = './js/aweme.js'
 
 
 # 系统标准输出，支持grep
@@ -149,11 +149,11 @@ def main():
             finished.wait()
         elif num == 4:
             # 枚举某个进程的所有模块信息
-            session = device.attach(u'SekiroIOS')  # 注入SpringBoard来获取一个session
+            session = device.attach(u'抖音短视频')  # 注入SpringBoard来获取一个session
             listModulesOfProcess(session)
         elif num == 5:
             # 显示界面ui
-            session = device.attach(u'SekiroIOS')  # 注入SpringBoard来获取一个session
+            session = device.attach(7697)  # 注入SpringBoard来获取一个session
             script = loadJSFile(session, UI_JS)  # 加载JS脚本
             while True:
                 line = sys.stdin.readline()
@@ -162,7 +162,7 @@ def main():
                 script.post(line[:-1])
         elif num == 6:
             # 动态hook
-            session = device.attach(u'SekiroIOS')  # 注入SpringBoard来获取一个session
+            session = device.attach(u'抖音短视频')  # 注入SpringBoard来获取一个session
             script = loadJSFile(session, HOOK_JS)  # 加载JS脚本
             sys.stdin.read()
 
@@ -178,3 +178,29 @@ if __name__ == '__main__':
         pass
     finally:
         pass
+
+
+"""
+<!--
+base: 0x1006bc000
+
+	Backtrace:
+	0x10240d800 Aweme!0x1d51800
+	0x10240d620 Aweme!0x1d51620
+	0x1023d6310 Aweme!0x1d1a310
+	0x1023d7098 Aweme!0x1d1b098
+	0x1023d627c Aweme!0x1d1a27c
+	0x1023a23e0 Aweme!0x1ce63e0
+	0x1023a2e38 Aweme!0x1ce6e38
+	0x1023a2240 Aweme!0x1ce6240
+	0x102376ce0 Aweme!0x1cbace0
+	0x102374788 Aweme!0x1cb8788
+	0x1036cd444 Aweme!0x3011444
+	0x1cdd29ecc UIKitCore!-[UITextView keyboardInput:shouldInsertText:isMarkedText:]
+	0x1cd833c14 UIKitCore!-[UIKeyboardImpl callShouldInsertText:]
+	0x1cd8433e0 UIKitCore!-[UIKeyboardImpl addWordTerminator:afterSpace:afterAcceptingCandidate:elapsedTime:executionContext:]
+	0x1cd841a20 UIKitCore!__81-[UIKeyboardImpl addInputString:withFlags:withInputManagerHint:executionContext:]_block_invoke
+	0x1cd87282c UIKitCore!-[UIKeyboardTaskExecutionContext returnExecutionToParentWithInfo:]
+
+-->
+"""
