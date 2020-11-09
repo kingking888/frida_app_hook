@@ -2,6 +2,7 @@
 // frida -U -l android_wechat.js -f com.tencent.mm --no-pause
 // 微信抓取用户信息，通过查找好友的方式
 Java.perform(function () {
+    var this_obj;
     var FTSAddFriendUI=Java.use("com.tencent.mm.plugin.fts.ui.FTSAddFriendUI");
 //    FTSAddFriendUI.a.overload('com.tencent.mm.plugin.fts.a.d.a.a', 'boolean').implementation=function(arg1, arg2){
 //        console.log("FTSAddFriendUI a Hook Start...");
@@ -14,9 +15,18 @@ Java.perform(function () {
 //        return result
 //    }
     FTSAddFriendUI.alH.overload('java.lang.String').implementation=function(arg1){
+        this_obj = this;
         console.log("FTSAddFriendUI alH Hook Start...");
         console.log(arg1)
         var result= this.alH(arg1)
+        return result
+    }
+    var z=Java.use("com.tencent.mm.platformtools.z");
+    FTSAddFriendUI.h.overload('com.tencent.mm.plugin.fts.ui.FTSAddFriendUI').implementation=function(arg1){
+        console.log("FTSAddFriendUI init Hook Start...");
+        console.log(arg1.rkX.value.GuF.value.getClass().getName())
+        console.log(z.a(arg1.rkX.value.GuF.value))
+        var result= this.h(arg1)
         return result
     }
     var f=Java.use("com.tencent.mm.plugin.fts.ui.FTSAddFriendUI$5");
