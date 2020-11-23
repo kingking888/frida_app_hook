@@ -1,4 +1,4 @@
-// js hook wechat  7.0.17
+// js hook wechat  7.0.19
 // account.bind.ui.MobileFriendUI b -》 app.ak.c -> br.d.b ->br.d$9.onDone -> MMFragmentActivity.startActivity
 Java.perform(function () {
 
