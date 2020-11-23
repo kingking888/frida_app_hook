@@ -58,22 +58,123 @@ function hook_libart() {
         }
     }
 
+    if (addrGetStringUTFChars != null) {
+        Interceptor.attach(addrGetStringUTFChars, {
+            onEnter: function (args) { },
+            onLeave: function (retval) {
+                if (retval != null) {
+                    var bytes = Memory.readCString(retval);
+                    console.log("[GetStringUTFChars] result:" + bytes);
+                }
+            }
+        });
+    }
+    if (addrNewStringUTF != null) {
+        Interceptor.attach(addrNewStringUTF, {
+            onEnter: function (args) {
+                if (args[1] != null) {
+                    var string = Memory.readCString(args[1]);
+                    console.log("[NewStringUTF] bytes:" + string);
+                }
+            },
+            onLeave: function (retval) { }
+        });
+    }
+    if (addrFindClass != null) {
+        Interceptor.attach(addrFindClass, {
+            onEnter: function (args) {
+                if (args[1] != null) {
+                    var name = Memory.readCString(args[1]);
+                    console.log("[FindClass] name:" + name);
+                }
+            },
+            onLeave: function (retval) { }
+        });
+    }
+    if (addrGetMethodID != null) {
+        Interceptor.attach(addrGetMethodID, {
+            onEnter: function (args) {
+                if (args[2] != null) {
+                    var name = Memory.readCString(args[2]);
+                    if (args[3] != null) {
+                        var sig = Memory.readCString(args[3]);
+                        console.log("[GetMethodID] name:" + name + ", sig:" + sig);
+                    } else {
+                        console.log("[GetMethodID] name:" + name);
+                    }
+
+                }
+            },
+            onLeave: function (retval) { }
+        });
+    }
+    if (addrGetStaticMethodID != null) {
+        Interceptor.attach(addrGetStaticMethodID, {
+            onEnter: function (args) {
+                if (args[2] != null) {
+                    var name = Memory.readCString(args[2]);
+                    if (args[3] != null) {
+                        var sig = Memory.readCString(args[3]);
+                        console.log("[GetStaticMethodID] name:" + name + ", sig:" + sig);
+                    } else {
+                        console.log("[GetStaticMethodID] name:" + name);
+                    }
+
+                }
+            },
+            onLeave: function (retval) { }
+        });
+    }
+    if (addrGetFieldID != null) {
+        Interceptor.attach(addrGetFieldID, {
+            onEnter: function (args) {
+                if (args[2] != null) {
+                    var name = Memory.readCString(args[2]);
+                    if (args[3] != null) {
+                        var sig = Memory.readCString(args[3]);
+                        console.log("[GetFieldID] name:" + name + ", sig:" + sig);
+                    } else {
+                        console.log("[GetFieldID] name:" + name);
+                    }
+
+                }
+            },
+            onLeave: function (retval) { }
+        });
+    }
+    if (addrGetStaticFieldID != null) {
+        Interceptor.attach(addrGetStaticFieldID, {
+            onEnter: function (args) {
+                if (args[2] != null) {
+                    var name = Memory.readCString(args[2]);
+                    if (args[3] != null) {
+                        var sig = Memory.readCString(args[3]);
+                        console.log("[GetStaticFieldID] name:" + name + ", sig:" + sig);
+                    } else {
+                        console.log("[GetStaticFieldID] name:" + name);
+                    }
+
+                }
+            },
+            onLeave: function (retval) { }
+        });
+    }
+
     if (addrRegisterNatives != null) {
         Interceptor.attach(addrRegisterNatives, {
             onEnter: function (args) {
                 console.log("[RegisterNatives] method_count:", args[3]);
                 var env = args[0];
                 var java_class = args[1];
-                
+
                 var funcAllocObject = new NativeFunction(addrAllocObject, "pointer", ["pointer", "pointer"]);
                 var funcGetMethodID = new NativeFunction(addrGetMethodID, "pointer", ["pointer", "pointer", "pointer", "pointer"]);
                 var funcCallObjectMethod = new NativeFunction(addrCallObjectMethod, "pointer", ["pointer", "pointer", "pointer"]);
                 var funcGetObjectClass = new NativeFunction(addrGetObjectClass, "pointer", ["pointer", "pointer"]);
                 var funcGetStringUTFChars = new NativeFunction(addrGetStringUTFChars, "pointer", ["pointer", "pointer", "pointer"]);
                 var funcReleaseStringUTFChars = new NativeFunction(addrReleaseStringUTFChars, "void", ["pointer", "pointer", "pointer"]);
-
+                console.log("ok ------------------------------------");
                 var clz_obj = funcAllocObject(env, java_class);
-                console.log("ok ------------------------------------" + java_class);
                 var mid_getClass = funcGetMethodID(env, java_class, Memory.allocUtf8String("getClass"), Memory.allocUtf8String("()Ljava/lang/Class;"));
                 var clz_obj2 = funcCallObjectMethod(env, clz_obj, mid_getClass);
                 var cls = funcGetObjectClass(env, clz_obj2);
@@ -83,7 +184,10 @@ function hook_libart() {
                 var class_name = ptr(name_pchar).readCString();
                 funcReleaseStringUTFChars(env, name_jstring, name_pchar);
 
+                //console.log(class_name);
+
                 var methods_ptr = ptr(args[2]);
+
                 var method_count = parseInt(args[3]);
                 for (var i = 0; i < method_count; i++) {
                     var name_ptr = Memory.readPointer(methods_ptr.add(i * Process.pointerSize * 3));
