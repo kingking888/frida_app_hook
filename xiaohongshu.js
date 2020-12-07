@@ -194,11 +194,101 @@ Java.perform(function () {
         return result
     }
 
-    var XhsHttpInterceptor=Java.use("com.xingin.shield.http.XhsHttpInterceptor");
-    XhsHttpInterceptor.$init.overload('java.lang.String', 'com.xingin.shield.http.a').implementation=function(arg1,arg2){
-        console.log("XhsHttpInterceptor")
-//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
-        var result= this.$init(arg1,arg2)
+//    var XhsHttpInterceptor=Java.use("com.xingin.shield.http.XhsHttpInterceptor");
+//    XhsHttpInterceptor.$init.overload('java.lang.String', 'com.xingin.shield.http.a').implementation=function(arg1,arg2){
+//        console.log("XhsHttpInterceptor")
+////        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+//        var result= this.$init(arg1,arg2)
+//        return result
+//    }
+
+    var l=Java.use("com.xingin.matrix.v2.profile.newpage.l");
+    l.onEvent.overload('com.xingin.matrix.v2.profile.newpage.c.b').implementation=function(arg1){
+        console.log("onEvent -------")
+        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+        var result= this.onEvent(arg1)
         return result
     }
+
+    var bbbb=Java.use("com.xingin.matrix.v2.profile.newpage.l$b");
+    bbbb.invoke.overload('java.lang.Object').implementation=function(arg1){
+        console.log("invoke")
+        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+        var result= this.invoke(arg1)
+        return result
+    }
+
+    var $a=Java.use("com.jakewharton.rxbinding3.d.c$a");
+    $a.onClick.overload('android.view.View').implementation=function(arg1){
+        console.log("onclick")
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+        var result= this.onClick(arg1)
+        return result
+    }
+
+//    var TextView=Java.use("android.widget.TextView");
+//    TextView.setText.overload('java.lang.CharSequence').implementation=function(arg1){
+//        console.log("setText")
+//        console.log(arg1.toString())
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+//        var result= this.setText(arg1)
+//        return result
+//    }
+
+    var CaptchaActivity=Java.use("com.xingin.xhs.antispam.CaptchaActivity");
+    CaptchaActivity.onCreate.overload('android.os.Bundle').implementation=function(arg1){
+        console.log("onCreate")
+//        console.log(arg1.toString())
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+        var result= this.onCreate(arg1)
+    }
+    CaptchaActivity.a.overload('java.lang.String', 'boolean', 'java.lang.Integer').implementation=function(arg1,arg2,arg3){
+        console.log("a")
+        console.log(arg1)
+        console.log(arg2)
+        console.log(arg3)
+//        console.log(arg1.toString())
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+        var result= this.a(arg1,arg2,arg3)
+    }
+
+    var CaptchaActivity$b=Java.use("com.xingin.xhs.antispam.CaptchaActivity$b");
+    CaptchaActivity$b.a.overload().implementation=function(){
+        console.log("a.overload()")
+//        console.log(arg1.toString())
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+        var result= this.a()
+    }
+    CaptchaActivity$b.a.overload('int').implementation=function(arg1){
+        console.log(" .overload('int')")
+//        console.log(arg1.toString())
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+        var result= this.a(arg1)
+    }
+    CaptchaActivity$b.a.overload('java.lang.CharSequence', 'boolean').implementation=function(arg1,arg2){
+        console.log(".overload('java.lang.CharSequence', 'boolean')")
+        console.log(arg1.toString())
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+        var result= this.a(arg1,arg2)
+    }
+
+    var CaptchaActivity$c=Java.use("com.xingin.xhs.antispam.CaptchaActivity$c");
+    CaptchaActivity$c.accept.overload('java.lang.Object').implementation=function(arg1){
+        console.log("accept")
+        console.log(arg1 == null)
+        console.log(arg1.a)
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+        var result= this.accept(arg1)
+    }
+
+    var eee=Java.use("com.xingin.widgets.g.e");
+    eee.a.overload('java.lang.String').implementation=function(arg1){
+        console.log("eeee")
+        console.log(arg1 == "")
+        console.log(arg1)
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+        var result= this.a(arg1)
+    }
+
+
 });

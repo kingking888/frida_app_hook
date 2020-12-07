@@ -1,78 +1,89 @@
 // js hook wechat  7.0.19
 // account.bind.ui.MobileFriendUI b -》 app.ak.c -> br.d.b ->br.d$9.onDone -> MMFragmentActivity.startActivity
+// frida -U -l wechat.js  -f com.tencent.mm --no-pause
 Java.perform(function () {
 
-    var MobileFriendUI=Java.use("com.tencent.mm.plugin.account.bind.ui.MobileFriendUI");
-    
-    MobileFriendUI.b.overload('com.tencent.mm.plugin.account.friend.a.a').implementation=function(arg1){
-        send("MobileFriendUI Hook Start...");
+    var RecentAppBrandView=Java.use("com.tencent.mm.plugin.appbrand.widget.desktop.RecentAppBrandView$a$1");
+    RecentAppBrandView.onClick.overload('android.view.View').implementation=function(arg1){
+        send("WebView.loadUrl...");
         console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
-        send(arg1.getUsername())
-        return this.b(arg1)
-    }
-
-    var a=Java.use("com.tencent.mm.plugin.account.friend.a.a");
-    
-    // a.convertFrom.overload('android.database.Cursor').implementation=function(arg1){
-    //     send("convertFrom Hook Start...");
-    //     console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
-    //     return this.convertFrom(arg1)
-    // }
-    
-    // a.ap.overload('[B').implementation=function(arg1){
-    //     send("convertFrom Hook Start...");
-    //     console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
-    //     var result =  this.ap(arg1)
-    //     send(this.iJS.value)
-    //     send(this.iJT.value)
-    //     return result
-    // }
-
-    var a=Java.use("com.tencent.mm.plugin.finder.api.b$a");
-    a.crX.overload().implementation=function(){
-        send("crX Hook Start...");
-        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
-        var result =  this.crX()
+        var result =  this.onClick(arg1)
         return result
     }
 
-    var db=Java.use("com.tencent.mm.aj.d$b");
-    db.aBj.overload().implementation=function(){
-        send("aBj Hook Start...");
-        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
-        var result =  this.aBj()
-        return result
-    }
-    var db=Java.use("com.tencent.mm.aj.d$b");
-    db.aBj.overload().implementation=function(){
-        send("aBj Hook Start...");
-        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
-        var result =  this.aBj()
-        return result
-    }
-    var fb=Java.use("com.tencent.mm.aj.f$b");
-    fb.aBj.overload().implementation=function(){
-        send("fb aBj Hook Start...");
-        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
-        var result =  this.aBj()
-        return result
-    }
+    // 好友匹配
+//    var MobileFriendUI=Java.use("com.tencent.mm.plugin.account.bind.ui.MobileFriendUI");
+//
+//    MobileFriendUI.b.overload('com.tencent.mm.plugin.account.friend.a.a').implementation=function(arg1){
+//        send("MobileFriendUI Hook Start...");
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+//        send(arg1.getUsername())
+//        return this.b(arg1)
+//    }
+//
+//    var a=Java.use("com.tencent.mm.plugin.account.friend.a.a");
+//
+//    // a.convertFrom.overload('android.database.Cursor').implementation=function(arg1){
+//    //     send("convertFrom Hook Start...");
+//    //     console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+//    //     return this.convertFrom(arg1)
+//    // }
+//
+//    // a.ap.overload('[B').implementation=function(arg1){
+//    //     send("convertFrom Hook Start...");
+//    //     console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+//    //     var result =  this.ap(arg1)
+//    //     send(this.iJS.value)
+//    //     send(this.iJT.value)
+//    //     return result
+//    // }
+//
+//    var a=Java.use("com.tencent.mm.plugin.finder.api.b$a");
+//    a.crX.overload().implementation=function(){
+//        send("crX Hook Start...");
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+//        var result =  this.crX()
+//        return result
+//    }
+//
+//    var db=Java.use("com.tencent.mm.aj.d$b");
+//    db.aBj.overload().implementation=function(){
+//        send("aBj Hook Start...");
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+//        var result =  this.aBj()
+//        return result
+//    }
+//    var db=Java.use("com.tencent.mm.aj.d$b");
+//    db.aBj.overload().implementation=function(){
+//        send("aBj Hook Start...");
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+//        var result =  this.aBj()
+//        return result
+//    }
+//    var fb=Java.use("com.tencent.mm.aj.f$b");
+//    fb.aBj.overload().implementation=function(){
+//        send("fb aBj Hook Start...");
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+//        var result =  this.aBj()
+//        return result
+//    }
+//
+//    var fb=Java.use("com.tencent.mm.aj.f$b");
+//    fb.aBj.overload().implementation=function(){
+//        send("fb aBj Hook Start...");
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+//        var result =  this.aBj()
+//        return result
+//    }
+//
+//    var i=Java.use("com.tencent.mm.aj.i");
+//    i.convertFrom.overload('android.database.Cursor').implementation=function(arg1){
+//        send("convertFrom aBj Hook Start...");
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+//        var result =  this.convertFrom(arg1)
+//        return result
+//    }
 
-    var fb=Java.use("com.tencent.mm.aj.f$b");
-    fb.aBj.overload().implementation=function(){
-        send("fb aBj Hook Start...");
-        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
-        var result =  this.aBj()
-        return result
-    }
-
-    var i=Java.use("com.tencent.mm.aj.i");
-    i.convertFrom.overload('android.database.Cursor').implementation=function(arg1){
-        send("convertFrom aBj Hook Start...");
-        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
-        var result =  this.convertFrom(arg1)
-        return result
-    }
 
 });
 //img_flag reserved1

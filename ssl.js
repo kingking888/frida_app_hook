@@ -96,4 +96,28 @@ Java.perform(function () {
     } catch (err) {
         console.log('* Unable to hook into Appcelerator pinning')
     }
+
+
+//    var OkHttpClient = Java.use("okhttp3.OkHttpClient");
+//    OkHttpClient.newCall.implementation = function (request) {
+//        var result = this.newCall(request);
+//        console.log(request.toString());
+//        return result;
+//    }
+//    var OkHttpClient$Builder = Java.use('okhttp3.OkHttpClient$Builder');
+//    OkHttpClient$Builder.proxy.overload('java.net.Proxy').implementation = function (arg1) {
+//        console.log('proxy ------------');
+//        return this;
+//    }
+
+    var Proxy = Java.use('android.net.Proxy');
+    Proxy.getDefaultHost.overload().implementation = function () {
+        console.log('proxy ------------');
+        return getDefaultHost();
+    }
+
+    Proxy.getDefaultPort.overload().implementation = function () {
+        console.log('proxy ------------');
+        return getDefaultPort();
+    }
 });
