@@ -3,6 +3,7 @@
    * 出至 https://github.com/r0ysue/r0capture/blob/main/script.js
    * Initializes 'addresses' dictionary and NativeFunctions.
    * frida -U -l ssl2.js  -f live.tech.storm --no-pause
+   * frida -U -l ssl2.js  -f com.tencent.mobileqq --no-pause
    */
 "use strict";
 rpc.exports = {
