@@ -3,6 +3,11 @@
 // 这里学到了 相同变量名称用 _ 来调用
 // 采用frida-inject 完成对某东函数调用，文件 jingdong_frida_rpc_http.js frida-inject***arm64两个。自提
 // 启动方式 ./frida-inject-12.8.2-android-arm64 -n com.jingdong.app.mall -s agent.js --runtime=v8
+//  改端口调用方式
+//  ./flang  -l 0.0.0.0:12345
+//  adb forward tcp:12345 tcp:12345
+//  frida -H 127.0.0.1:12345  -l jingdong.js  -f com.jingdong.app.mall
+//  %resume 启动
 Interceptor.attach(Module.findExportByName(null, "fopen"), {
     onEnter: function(args) {
 //        console.log("fopen Interceptor attached onEnter...");
@@ -98,8 +103,18 @@ Java.perform(function () {
 //        var result = this.$init(contacts);
 //        return result;
 //    }
+
+    var OKLog = Java.use("com.jingdong.sdk.oklog.OKLog");
+    OKLog.d.overload('java.lang.String', 'java.lang.String').implementation = function (arg1,arg2) {
+        console.log(arg1 + "=========" + arg2);
+    }
+    OKLog.i.overload('java.lang.String', 'java.lang.String').implementation = function (arg1,arg2) {
+        console.log(arg1 + "=========" + arg2);
+    }
+
     var k = Java.use("com.jd.lib.jdfriend.view.activity.k");
     k.$init.overload('com.jd.lib.jdfriend.view.activity.ContactsFriendActivity').implementation = function (contacts) {
+        OKLog.D = true
         var result = this.$init(contacts);
         return result;
     }
@@ -148,6 +163,63 @@ Java.perform(function () {
         console.log(result);
         return result;
     }
+//    var ContactsFriendResponse = Java.use("com.jd.lib.jdfriend.model.entity.ContactsFriendResponse");
+//    ContactsFriendResponse.$init.overload('java.util.List', 'com.jd.lib.jdfriend.model.entity.MtaEntity').implementation = function (arg1,arg2) {
+//        console.log("ContactsFriendResponse");
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+//        this.$init(arg1,arg2);
+//    }
+//    ContactsFriendResponse.setParam.overload('com.jingdong.common.network.BaseParam').implementation = function (arg1) {
+//        console.log("ContactsFriendResponse12");
+//        console.log(arg1)
+//        console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+//        var result = this.setParam(arg1);
+//    }
+//    var BaseAction = Java.use("com.jingdong.common.network.BaseAction");
+//    BaseAction.executeSucCommand.overload('java.lang.String').implementation = function (arg1) {
+//        console.log("BaseAction");
+//        console.log(arg1)
+//        this.executeSucCommand(arg1);
+//    }
+//    var BaseFriendResponse = Java.use("com.jd.lib.jdfriend.model.entity.BaseFriendResponse");
+//    BaseFriendResponse.decrypt.overload('com.jingdong.common.impl.parse.GsonParser', 'java.lang.String', 'java.lang.Class').implementation = function (arg1,arg2,arg3) {
+//        console.log("BaseFriendResponse");
+////        console.log(arg2);
+//        console.log(arg3.getName())
+//        return this.decrypt(arg1,arg2,arg3);
+//    }
+    // 解密
+//    var i = Java.use("com.jd.lib.jdfriend.b.a.i");
+//    i.a.overload('java.lang.String', 'int').implementation = function (arg1,arg2) {
+//        console.log("com.jd.lib.jdfriend.b.a.i");
+//        console.log(arg1 + "：" + arg2)
+//        return this.a(arg1,arg2);
+//    }
+//    i.a.overload('java.lang.String').implementation = function (arg1) {
+//        console.log("com.jd.lib.jdfriend.b.a.i");
+//        console.log(arg1)
+//
+//        var result =  this.a(arg1);
+//        console.log(result)
+//        return result;
+//    }
+    var DesCbcCrypto = Java.use("com.jd.jdsdk.security.DesCbcCrypto");
+    DesCbcCrypto.encrypt.overload('java.lang.String', 'java.lang.String', '[B').implementation = function (arg1,arg2,arg3) {
+        console.log("DesCbcCrypto encode");
+        console.log(arg1 + "：" + arg2)
+        console.log(arg3 == null)
+        var result =  this.encrypt(arg1,arg2,arg3);
+        console.log(result)
+        return result;
+    }
+    DesCbcCrypto.decrypt.overload('java.lang.String', 'java.lang.String', '[B').implementation = function (arg1,arg2,arg3) {
+        console.log("DesCbcCrypto decode");
+        console.log(arg1 + "：" + arg2)
+        console.log(arg3 == null)
+        var result =  this.decrypt(arg1,arg2,arg3);
+        console.log(result)
+        return result;
+    }
 })
 
 //  手机号加密 PersonalDesCommonUtils.commonEncrypt(str, 2); {"enc":2,"phoneNums":"V9z4yyiL9d22gNpXaJebKA==","plugin_version":90300}
@@ -159,3 +231,5 @@ Java.perform(function () {
 //    public String signature(Context context, String str, String str2, String str3, String str4, String str5) {
 //         return BitmapkitUtils.getSignFromJni(context, str, str2, str3, str4, str5);
 //    }
+
+

@@ -38,14 +38,32 @@ Interceptor.attach(Module.findExportByName(null, "strstr"), {
 
 // rpc调用入口
 rpc.exports = {
-    loadurl: function (param) {
+    getSign: function (param1,param2,param3,param4,param5) {
          var body = null;
          Java.perform(function () {
              var application = Java.use("android.app.ActivityThread").currentApplication();
              var context = application.getApplicationContext();
              var BitmapkitUtils = Java.use('com.jingdong.common.utils.BitmapkitUtils');
-             var result =  BitmapkitUtils.getSignFromJni(context,"1","2","3","4","5");
-             body = result
+             var result =  BitmapkitUtils.getSignFromJni(context,param1,param2,param3,param4,param5);
+             body = result;
+         });
+         return body;
+    },
+    encode: function (param1) {
+         var body = "error";
+         Java.perform(function () {
+             var i = Java.use('com.jd.lib.jdfriend.b.a.i');
+             var result = i.a(param1);
+             body = result;
+         });
+         return body;
+    },
+    decode: function (param1,param2) {
+         var body = "error";
+         Java.perform(function () {
+             var i = Java.use('com.jd.lib.jdfriend.b.a.i');
+             var result = i.a(param1,param2);
+             body = result;
          });
          return body;
     }
@@ -60,10 +78,27 @@ http.createServer(function (request, response) {
     console.log(url);
     const pathname = urllib.parse(url,true).pathname;
     const queryObject = urllib.parse(url,true).query;
-    console.log(pathname);
     response.writeHead(200, {'Content-Type': 'text/plain'});
     if (pathname == "/jingdong"){
-        var body = rpc.exports.loadurl(queryObject['a'])
+        var body = ""
+        console.log(queryObject['action']);
+        if (queryObject['action'] == "getSign"){
+            console.log(queryObject['functionId']);
+            console.log(queryObject['body']);
+            console.log(queryObject['uuid']);
+            console.log(queryObject['client']);
+            console.log(queryObject['clientVersion']);
+            body = rpc.exports.getSign(queryObject['functionId'],queryObject['body'],queryObject['uuid'],queryObject['client'],queryObject['clientVersion'])
+        }
+        if (queryObject['action'] == "encode"){
+            console.log(queryObject['phone']);
+            body = rpc.exports.encode(queryObject['phone']+"")
+        }
+        if (queryObject['action'] == "decode"){
+            console.log(queryObject['data']);
+            console.log(queryObject['enc']-0);
+            body = rpc.exports.decode(queryObject['data'],queryObject['enc']-0)
+        }
         console.log(body);
         response.write(body);
     }else{
@@ -73,10 +108,13 @@ http.createServer(function (request, response) {
 }).listen(8888);
 // 终端打印如下信息
 console.log('Server running at http://127.0.0.1:8888/');
+// http://172.20.23.211:8888/jingdong?functionId=fetchFriendsByMobileNums&body=%7B%22enc%22%3A2%2C%22phoneNums%22%3A%22qDFk%2BVD%2F7u6oOL1V%2FXpPIPMYwRTVtytQ%22%2C%22plugin_version%22%3A90300%7D&uuid=867686021141286-009acdb84517&client=android&clientVersion=9.3.0
+// st=1609382314049&sign=fc39889f8e9d12c0c5e4ff85aadf04c4&sv=110
 
+// http://172.20.23.211:8888/jingdong?action=decode&enc=2&data=EZhQiwyKt3Gkc%2BIWaTXn6npJaog8so6R2el4G6feLATFWAoRJQmWVOGdfdXu81Bw86hWlvntSBhhQAUEoSYTzB1zj1Cr62XUBcymPW1bLRIMluHhQK77WQcFNA0gWh8Xw3Ty%2B4rNOgaKQmY2zZVQM4D6LtkTPfi0nT5tgqrjuYfHXtiYAQ3sqfajGVO%2FwzyUG7Yi3Kw%2B4EdgzTeIE3%2BHhGyssxsVaHxFyYb4qzS0xio9OFnkLj%2BnOS3tsOsbmjntZk64V400ee6p8fZU3F1p6k%2BmtirEPYo6q9vglnkWzZRDd7NHwcNyyd6JHNVPM9seSihWyy5sZG70tLG%2BUkHrcnGVazjuWNKrKk1qM73X5A4zx%2BClE1F8f0jkwGFdts8Z9RWRkaVR5db7ClmLfvZOs7jXVd03cDpk32Sa3RYkRPYSVOg%2FUVwbNnqh7ybhtF0L2MuYIeh%2B0yF%2FkT1BPBYb%2Bte5HlCPz8d4c6CCAfJPEaDriVjEVWMG19z2DVABi6eRneBRSsw6Ce01YKP8KhBDZjWOWvHmXoVtHot28CTS0HLglMxvC9GYlukR%2F2te2yEoq99Ujn5erkkYwPPMWmSaLkmKTY7pAYWsnZ3HZdkS83uaE9Og6qU6LbuQ3uatI8YZ0zNX3UtOE6amybRh6athxA3W1mirFVSJcoP1KCVrhfBsc4PEKLyR4MWgSlYfyFxNWakYznGitAuNM0I09SKjKIpzx%2FSglMfiKsEsRuuVu8JygOqPBxerX74H9dy%2Fl1TVliPM8PyGfPUDgS5%2B9d%2FyJ%2FJfQnJgfuoK1s%2BWlyU9ZSJIwEepfYMh1rt1C8GMKV123PDsnmO7k7FYjx1AlBeMlPL0VVfxbqd9IbxUAAXKcubfPydEpeCoMSWvsW%2FbVw6stX0gGz%2BqQr9BJts1caVPMc7bNW9g7kGyRjoY0kj7aOZ0g%2FyDjMnv%2BJDXrJbZujmS6fXC%2FGoX8dA1Hyjd5YmvpGamh9oFDBHpydPzBQPXcuAIx%2BquBE5iX2tyki30TmtWTv4kIqsN2O58QZNlfkisug%3D%3D
 
 //***************************************************************************************************/
-//******************************************frida 脚本 start******************************************/
+//******************************************frida 脚本 end******************************************/
 //***************************************************************************************************/
 },{"http":19,"url":68}],2:[function(require,module,exports){
 
