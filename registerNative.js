@@ -73,6 +73,7 @@ function hook_libart() {
                 var funcReleaseStringUTFChars = new NativeFunction(addrReleaseStringUTFChars, "void", ["pointer", "pointer", "pointer"]);
 
                 var clz_obj = funcAllocObject(env, java_class);
+                console.log("ok ------------------------------------" + java_class);
                 var mid_getClass = funcGetMethodID(env, java_class, Memory.allocUtf8String("getClass"), Memory.allocUtf8String("()Ljava/lang/Class;"));
                 var clz_obj2 = funcCallObjectMethod(env, clz_obj, mid_getClass);
                 var cls = funcGetObjectClass(env, clz_obj2);
@@ -82,10 +83,7 @@ function hook_libart() {
                 var class_name = ptr(name_pchar).readCString();
                 funcReleaseStringUTFChars(env, name_jstring, name_pchar);
 
-                //console.log(class_name);
-
                 var methods_ptr = ptr(args[2]);
-
                 var method_count = parseInt(args[3]);
                 for (var i = 0; i < method_count; i++) {
                     var name_ptr = Memory.readPointer(methods_ptr.add(i * Process.pointerSize * 3));

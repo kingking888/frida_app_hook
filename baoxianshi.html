@@ -1,0 +1,38 @@
+<html>
+    <head></head>
+    <body>
+    <script src="https://res.winbaoxian.com/auto_upload_ci/sdk/app-bridge-common_1.0.2.js"></script>
+    <script src="https://res.winbaoxian.com/auto_upload_ci/planbook-main/planbook-input/js/manifest.a3a61b0bf4483adaa7a2.js"></script>
+    <script src="https://res.winbaoxian.com/auto_upload_ci/planbook-main/planbook-input/js/vendor.c41df5a7bf5bbe6f553b.js"></script>
+    <script src="baoxianshi_helper.js"></script>
+    <script type="text/javascript" src="http://file.virjar.com/sekiro_web_client.js?_=123"></script>
+    <script type="text/javascript">
+
+    function uuidv4() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+    // 自己给地址
+    var url = "wss://sekiro-pa.xxx.com/websocket/?group=langcode2&clientId=tt2" + uuidv4();
+    var client = new SekiroClient(url);
+
+    client.registerAction("getSignature",function(request, resolve,reject) {
+        var params = request['params'];
+        console.log("params: " + params);
+        let _signature =__webpack_require__(JSON.parse(params), {groupDataKey: "allMainInsData"})
+        console.log("signature" + _signature);
+        resolve(_signature);
+    });
+    client.registerAction("getParams",function(request, resolve,reject) {
+        var params = request['params'];
+        console.log("params: " + params);
+        let result = helperJs.makePlanbook(JSON.parse(params))
+        console.log("result" + JSON.stringify(result));
+        resolve(encodeURIComponent(JSON.stringify(result)));
+    });
+    </script>
+
+</body>
+</html>

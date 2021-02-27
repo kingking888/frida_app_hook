@@ -1,3 +1,9 @@
+// 保险师破解 
+// frida -U -l ssl.js -f com.winbaoxian.wybx --no-pause
+// frida -U -l baoxianshi.js -f com.winbaoxian.wybx --no-pause
+// 保险师  chrome远程调试
+// baoxianshi.html是计划书远程加解密
+
 Java.perform(function () {
 
     var d=Java.use("com.rex.generic.rpc.b.d");
@@ -73,6 +79,38 @@ Java.perform(function () {
         var result= this.setOrderNum(arg1,arg2)
         // send(result)
         send("setOrderNum Hook end...");
+        return result
+    }
+
+    var GeneralWebViewActivity=Java.use("com.winbaoxian.wybx.module.web.GeneralWebViewActivity");
+    GeneralWebViewActivity.onCreate.overload('android.os.Bundle').implementation=function(arg1){
+        send("onCreate Hook Start...");
+        var result= this.onCreate(arg1)
+        return result
+    }
+    GeneralWebViewActivity.jumpTo.overload('android.content.Context', 'java.lang.String').implementation=function(arg1,arg2){
+        send("jumpTo Hook Start...");
+        var result= this.jumpTo(arg1,arg2)
+        return result
+    }
+
+
+    // var d=Java.use("com.winbaoxian.a.a.d");
+    // d.a.overload('int', 'java.lang.String', '[Ljava.lang.Object;').implementation=function(arg1,arg2,arg3){
+    //     send("a Hook Start...");
+    //     send(arg1);
+    //     send(arg2);
+    //     send(this.a(arg3))
+    //     var result= this.a(arg1,arg2,arg3)
+    //     return result
+    // }
+
+    var GeneralWebViewActivityBase=Java.use("com.winbaoxian.wybx.module.web.GeneralWebViewActivityBase");
+    GeneralWebViewActivityBase.a.overload('java.lang.String').implementation=function(arg1){
+        send("a Hook Start...");
+        // console.log(Java.use("android.util.Log").getStackTraceString(Java.use("java.lang.Exception").$new()));
+        arg1 = "https://pbf.winbaoxian.com/planBook/planbookInput/pages/common/templatev1/templatev1.html?planbookId=7268"
+        var result= this.a(arg1)
         return result
     }
 
